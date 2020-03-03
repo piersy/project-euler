@@ -1,6 +1,53 @@
 package main
 
-func main() {
+import "testing"
+
+func TestV1(t *testing.T) {
+	sum := 0
+	for i := 0; i < 1000; i++ {
+		if i%5 == 0 || i%3 == 0 {
+			sum += i
+		}
+	}
+	println(sum)
+}
+
+func TestV2(t *testing.T) {
+	threes := 0
+	fives := 0
+	sum := 0
+	complete := 0
+	for {
+		if threes <= fives && threes < 1000 {
+			threes += 3
+			if threes >= 1000 {
+				complete++
+				if complete == 2 {
+					break
+				}
+				continue
+			}
+			if threes != fives {
+				sum += threes
+			}
+		} else if fives < 1000 {
+			fives += 5
+			if fives >= 1000 {
+				complete++
+				if complete == 2 {
+					break
+				}
+				continue
+			}
+			if threes != fives {
+				sum += fives
+			}
+		}
+	}
+	println(sum)
+}
+
+func TestV3(t *testing.T) {
 	increments := []int{3, 5}
 	totals := []int{0, 0}
 	length := len(totals)
