@@ -1,18 +1,54 @@
 package main
 
-import "testing"
+import (
+	"fmt"
+	"reflect"
+	"runtime"
+	"testing"
 
-func TestV1(t *testing.T) {
+	"github.com/stretchr/testify/assert"
+)
+
+var testCases = []func() int{v1, v2, v3}
+
+func TestVersions(t *testing.T) {
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf(FunctionName(tc)), func(t *testing.T) {
+			assert.Equal(t, 233168, tc())
+		})
+	}
+}
+
+func BenchmarkVersions(b *testing.B) {
+	for _, tc := range testCases {
+		b.Run(fmt.Sprintf(FunctionName(tc)), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				assert.Equal(b, 233168, tc())
+			}
+		})
+	}
+}
+
+func FunctionName(i interface{}) string {
+	return runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
+}
+
+// Simple implemenation
+func v1() int {
 	sum := 0
 	for i := 0; i < 1000; i++ {
 		if i%5 == 0 || i%3 == 0 {
 			sum += i
 		}
 	}
-	println(sum)
+	return sum
 }
 
-func TestV2(t *testing.T) {
+// Keep a running total of threes and fives and keep adding the respective
+// values to them and then adding each to the total when that happens. But
+// ensuring that we don't double add in the case that both threes and fives
+// have the same value.
+func v2() int {
 	threes := 0
 	fives := 0
 	sum := 0
@@ -44,10 +80,12 @@ func TestV2(t *testing.T) {
 			}
 		}
 	}
-	println(sum)
+	return sum
 }
 
-func TestV3(t *testing.T) {
+// Here I try to write v2 in a more concise way, id didn't work. It's also
+// slower, I guess because of the slice indexing.
+func v3() int {
 	increments := []int{3, 5}
 	totals := []int{0, 0}
 	length := len(totals)
@@ -84,5 +122,5 @@ func TestV3(t *testing.T) {
 		sum += totals[curr]
 	}
 END:
-	println(sum)
+	return sum
 }
