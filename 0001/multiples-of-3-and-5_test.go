@@ -1,3 +1,5 @@
+// Sum all multiples of 3 or 5 below 1000
+
 package main
 
 import (
@@ -9,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var testCases = []func() int{v1, v2, v3}
+var testCases = []func() int{v1, v2, v3, v4}
 
 func TestVersions(t *testing.T) {
 	for _, tc := range testCases {
@@ -124,3 +126,36 @@ func v3() int {
 END:
 	return sum
 }
+
+// A second attempt at simplifying v2
+func v4() int {
+	threes := 0
+	fives := 0
+	sum := 0
+	for threes < 1000 || fives < 1000 {
+		var result int
+		if threes < fives {
+			threes += 3
+			if threes < 1000 {
+				result = threes
+			}
+
+		} else {
+			fives += 5
+			if fives < 1000 {
+				result = fives
+			}
+		}
+		// If they are equal then we must have already summed this value.
+		if threes == fives {
+			result = 0
+		}
+		sum += result
+	}
+	return sum
+}
+
+// func update(threes, fives int) int {
+// 	var result int
+// 	return result
+// }
