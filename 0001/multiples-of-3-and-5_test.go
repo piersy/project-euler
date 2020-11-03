@@ -160,7 +160,19 @@ func v4() int {
 	return sum
 }
 
-// func update(threes, fives int) int {
-// 	var result int
-// 	return result
-// }
+// Now having looked at the forum, I will attempt the neat solution using
+// arithmetic progressions. Basically we can use the formula for summing
+// arithmetic progressions to sum the progression of 3s and the progression of
+// 5s and subtract the progression of 15s.
+//
+// The formula is n/2(2a + (n – 1)d). 'a' is the first term and 'd' is the
+// difference between the first and second term
+//
+// So for 3s there are 333 terms in the sequence (3*333 == 999) and for 5s
+// there are 199 (5*199 == 995) and for 15s there are 66 (66*15 == 990)
+//
+// So this gives us:
+// 333/2(6 + 332*3) = 166833
+// 199/2(10 + 198*5) = 99500
+// 66/2(30 + 65*15) = 33165
+// 166833 + 99500 - 33165 = 233168
